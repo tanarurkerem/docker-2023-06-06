@@ -3,7 +3,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - 127.0.0.1:80:8080
+      - 127.0.0.1:8080:8080
   postgres:
     image: postgres
     environment:
@@ -13,9 +13,20 @@ services:
       - ./db:/docker-entrypoint-initdb.d
   web:
     build: ./web
-    ports:
-      - 127.0.0.1:8080:80
     environment:
       - NAME=Istvan
+      - VIRTUAL_HOST=web.l.wdh.hu
+  web2:
+    build: ./web
+    environment:
+      - NAME=Lilla
+      - VIRTUAL_HOST=web2.l.wdh.hu
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
 volumes:
   data:
