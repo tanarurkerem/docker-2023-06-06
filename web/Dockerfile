@@ -1,4 +1,4 @@
 FROM nginx
-COPY ./dockerentrypoint.sh /dockerentrypoint.sh
-RUN chmod a+x /dockerentrypoint.sh
-ENTRYPOINT ["/dockerentrypoint.sh"]
+COPY ./start.sh /start.sh
+RUN chmod a+x /start.sh
+CMD ["/start.sh"]
