@@ -2,8 +2,8 @@
 services:
   adminer:
     image: adminer
-    ports:
-      - 127.0.0.1:8080:8080
+    environment:
+      - VIRTUAL_HOST=adminer.l.wdh.hu
   postgres:
     image: postgres
     environment:
@@ -22,10 +22,16 @@ services:
       - NAME=Lilla
       - VIRTUAL_HOST=web2.l.wdh.hu
 
+  web3:
+    build: ./web
+    environment:
+      - NAME=yourname
+      - VIRTUAL_HOST=web3.l.wdh.hu
+
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
-      - "80:80"
+      - "127.0.0.1:80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 volumes:
