@@ -1,9 +1,15 @@
+#https://github.com/tanarurkerem/docker-2023-06-06
 services:
   adminer:
     image: adminer
     ports:
-      - 80:8080
+      - 127.0.0.1:80:8080
   postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: secret
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
+volumes:
+  data:
