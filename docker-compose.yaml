@@ -1,0 +1,9 @@
+services:
+  adminer:
+    image: adminer
+    ports:
+      - 80:8080
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: secret
