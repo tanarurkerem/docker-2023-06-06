@@ -10,22 +10,73 @@ services:
       retries: 3
       start_period: 40s
     volumes:
-      - dbvolume:/var/lib/mysql
+      - "dbvolume:/var/lib/mysql"
+    networks:
+      - dbnetwork
   admin:
     image: phpmyadmin/phpmyadmin
     environment:
-      - PMA_HOST=db
-      - PMA_USER=root
-      - PMA_PASSWORD=root
-      - VIRTUAL_HOST=admin.l.wdh.hu
+      # - PMA_HOST=db
+      # - PMA_USER=root
+      # - PMA_PASSWORD=root
+      # - VIRTUAL_HOST=admin.l.wdh.hu
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      VIRTUAL_HOST: admin.l.wdh.hu
     depends_on:
       - db
+    networks:
+      - webnetwork
+      - dbnetwork
+  drupal:
+    image: drupal
+    environment:
+      VIRTUAL_HOST: drupal.l.wdh.hu
+    volumes:
+      - drupalvolume:/var/www/html/sites
+    networks:
+      - webnetwork
+      - dbnetwork
+    depends_on:
+      - nginx-proxy
+  homepage:
+    image: drupal
+    environment:
+      VIRTUAL_HOST: homepage.l.wdh.hu
+    volumes:
+      - homepagevolume:/var/www/html/sites
+    networks:
+      - webnetwork
+      - dbnetwork
+    depends_on:
+      - nginx-proxy
+  update:
+    image: drupal:latest
+    environment:
+      VIRTUAL_HOST: update.l.wdh.hu
+    volumes:
+      - updatevolume:/var/www/html/sites
+    networks:
+      - webnetwork
+      - dbnetwork
+    depends_on:
+      - nginx-proxy
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
       - "127.0.0.1:80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - webnetwork
 
 volumes:
   dbvolume:
+  drupalvolume:
+  homepagevolume:
+  updatevolume:
+
+networks:
+  webnetwork:
+  dbnetwork:
