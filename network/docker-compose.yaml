@@ -3,11 +3,29 @@ services:
     image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u", "root", "-proot", "ping"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - dbvolume:/var/lib/mysql
   admin:
     image: phpmyadmin/phpmyadmin
     environment:
       - PMA_HOST=db
       - PMA_USER=root
       - PMA_PASSWORD=root
+      - VIRTUAL_HOST=admin.l.wdh.hu
+    depends_on:
+      - db
+  nginx-proxy:
+    image: jwilder/nginx-proxy
     ports:
-      - 127.0.0.1:80:80
+      - "127.0.0.1:80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+volumes:
+  dbvolume:
