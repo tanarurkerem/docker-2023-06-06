@@ -10,6 +10,23 @@ services:
     volumes:
       - ./:/app
     command: ./init.sh
+    init: true
+    profiles:
+      - lts
+  node-19:
+    build:
+      context: .
+      target: base
+      # args:
+      #   - name=value
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - ./:/app
+    command: ./init.sh
+    init: true
+    profiles:
+      - nextVersion
   node-live:
     build:
       context: .
@@ -17,6 +34,8 @@ services:
       # args:
       #   - name=value
     image: tanarurkerem/nest:latest
+    profiles:
+      - live
   node-test:
     build:
       context: .
@@ -24,3 +43,5 @@ services:
       # args:
       #   - name=value
     image: tanarurkerem/nest:test
+    profiles:
+      - test

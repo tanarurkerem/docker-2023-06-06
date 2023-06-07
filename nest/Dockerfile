@@ -1,4 +1,5 @@
-FROM node as base
+ARG VERSION=latest
+FROM node:${VERSION} as base
 # RUN apt-get instal ....
 USER node
 WORKDIR /app
