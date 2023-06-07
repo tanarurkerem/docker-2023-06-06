@@ -2,7 +2,25 @@ services:
   node:
     build:
       context: .
+      target: base
       # args:
       #   - name=value
     ports:
       - 127.0.0.1:3000:3000
+    volumes:
+      - ./:/app
+    command: ./init.sh
+  node-live:
+    build:
+      context: .
+      target: live
+      # args:
+      #   - name=value
+    image: tanarurkerem/nest:latest
+  node-test:
+    build:
+      context: .
+      target: test
+      # args:
+      #   - name=value
+    image: tanarurkerem/nest:test
