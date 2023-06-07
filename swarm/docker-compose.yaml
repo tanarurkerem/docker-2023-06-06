@@ -1,0 +1,28 @@
+# docker stack deploy -c docker-compose.yaml db
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u", "root", "-proot", "ping"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - "dbvolume:/var/lib/mysql"
+  admin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      # - PMA_HOST=db
+      # - PMA_USER=root
+      # - PMA_PASSWORD=root
+      # - VIRTUAL_HOST=admin.l.wdh.hu
+      PMA_HOST: db
+    ports:
+      - 80:80
+    depends_on:
+      - db
+volumes:
+  dbvolume:
