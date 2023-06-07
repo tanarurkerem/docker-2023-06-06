@@ -1,5 +1,7 @@
 FROM node
-RUN git clone https://github.com/nestjs/typescript-starter.git project
-RUN cd project
+USER node
+WORKDIR /project
+RUN git clone https://github.com/nestjs/typescript-starter.git /project
 RUN npm install
-RUN npm run start
+CMD npm run start
+EXPOSE 3000

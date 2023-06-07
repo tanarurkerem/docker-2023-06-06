@@ -1,3 +1,9 @@
 services:
   node:
-    build: .
+    build:
+      context: .
+      # args:
+      #   - http_proxy=http://example.com
+      #   - https_proxy=http://example.com
+    ports:
+      - 127.0.0.1:3000:3000
