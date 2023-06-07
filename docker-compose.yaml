@@ -16,18 +16,19 @@ services:
     environment:
       - NAME=Istvan
       - VIRTUAL_HOST=web.l.wdh.hu
+    init: true
   web2:
     build: ./web
     environment:
       - NAME=Lilla
       - VIRTUAL_HOST=web2.l.wdh.hu
-
+    init: true
   web3:
     build: ./web
     environment:
       - NAME=yourname
       - VIRTUAL_HOST=web3.l.wdh.hu
-
+    init: true
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
